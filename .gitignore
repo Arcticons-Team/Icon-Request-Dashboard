@@ -1,0 +1,14 @@
+*.iml
+*.apk
+*.class
+*.db
+*.log
+*.dex
+*.pro
+*.yml
+*~
+
+local.properties
+gradlew
+gradlew.bat
+.DS_Store
