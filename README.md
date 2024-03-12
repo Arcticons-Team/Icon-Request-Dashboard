@@ -14,7 +14,7 @@ It also checks your pull requests and removes the entries from the requests list
 
 1. Install Python if you haven't installed it
 2. Install the dependencies
-3. Download your e-mails and save them to `scripts/mails` for example (you can batch download mails easily with Thunderbird).
+3. Download your e-mails and save them to `scripts/mails` for example. (You can batch download mails easily with [Thunderbird](https://www.thunderbird.net/en-US/).)
 4. Run email_parser.py in a terminal: `email_parser.py mail_folder_path appfilter_path extracted_png_folder_path requests_path`
    (Change the paths according to your mail, appfilter, extracted png, and requests locations.)
 This generates a `requests.txt` file and an `updatable.txt` if existing apps have updates. You can find the updatable file in the scripts folder when it's generated.
