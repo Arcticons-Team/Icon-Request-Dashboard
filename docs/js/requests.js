@@ -22,7 +22,7 @@ const debounce = (func, delay) => {
     };
 };
 
-// Fetch and process data
+// CHANGE THIS LINE -> Fetch and process data
 fetch('https://raw.githubusercontent.com/Arcticons-Team/Icon-Request-Dashboard/main/generated/requests.txt')
     .then(response => {
         if (!response.ok) {
