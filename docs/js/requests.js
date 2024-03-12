@@ -23,7 +23,7 @@ const debounce = (func, delay) => {
 };
 
 // Fetch and process data
-fetch('https://raw.githubusercontent.com/JapanYoshi/dollphone-foss/main/generated/requests.txt')
+fetch('https://raw.githubusercontent.com/Arcticons-Team/Icon-Request-Dashboard/main/generated/requests.txt')
     .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -43,7 +43,7 @@ fetch('https://raw.githubusercontent.com/JapanYoshi/dollphone-foss/main/generate
             const appfilter = lines[1].trim().split('\n').join(' ').trim();
             const appLinks = lines.slice(2, lines.length - 2).map((line, index) => {
                 const imageName = index < imageNames.length ? imageNames[index] : 'img/requests/default.svg';
-                return `<a href="${line.trim()}" target="_blank"><img src="${imageName}" alt="Image" style="width:50px;height:50px;"></a>`;
+                return `<a href="${line.trim()}" class="links" target="_blank"><img src="${imageName}" alt="Image"></a>`;
             }).join('\n');
             const requestedTimestamp = parseInt(lines.slice(lines.length - 2)[1].trim().split(' ')[2]);
             const requestedInfo = lines.slice(lines.length - 2)[0].trim().split(' ')[1].trim();
@@ -64,7 +64,7 @@ fetch('https://raw.githubusercontent.com/JapanYoshi/dollphone-foss/main/generate
         appEntriesDataGlobal = appEntriesData;
 
         // Example usage:
-        fetch('https://raw.githubusercontent.com/JapanYoshi/dollphone-foss/icon-requests/docs/assets/combined_appfilter.xml')
+        fetch('https://raw.githubusercontent.com/Arcticons-Team/Arcticons/icon-requests/docs/assets/combined_appfilter.xml')
             .then(response => {
                 if (!response.ok) {
                     // If appfilter.xml cannot be loaded, render appEntriesData as is
@@ -94,27 +94,26 @@ fetch('https://raw.githubusercontent.com/JapanYoshi/dollphone-foss/main/generate
     })
     .catch(error => console.error('Error fetching file:', error));
 
+// Filter appEntriesData based on appfilter content
+function filterAppfilter(appEntriesData, appfilterContent) {
+    const appfilterItems = parseAppfilter(appfilterContent);
+    const filteredOutEntries = [];
+
+    const filteredData = appEntriesData.filter(entry => {
+        const entryAppfilter = entry.appfilter.trim().split('"')[1].trim();
+        // Check if the entry is filtered out
+        const isFiltered = appfilterItems.some(component => component === entryAppfilter);
+        if (isFiltered) {
+            filteredOutEntries.push(entryAppfilter);
+        }
+        return !isFiltered;
+    });
+    console.log("Filtered out entries:", filteredOutEntries);
+    return filteredData;
+}
 
 
-    // Filter appEntriesData based on appfilter content
-    function filterAppfilter(appEntriesData, appfilterContent) {
-        const appfilterItems = parseAppfilter(appfilterContent);
-        const filteredOutEntries = [];
-    
-        const filteredData = appEntriesData.filter(entry => {
-            const entryAppfilter = entry.appfilter.trim().split('"')[1].trim();
-            // Check if the entry is filtered out
-            const isFiltered = appfilterItems.some(component => component === entryAppfilter);  
-            if (isFiltered) {
-                filteredOutEntries.push(entryAppfilter);
-            } 
-            return !isFiltered;
-        });
-        console.log("Filtered out entries:", filteredOutEntries); 
-        return filteredData;
-    }
-
-    // Function to extract the drawable attribute from appfilter
+// Function to extract the drawable attribute from appfilter
 function extractDrawable(appfilter) {
     const regex = /drawable="([^"]+)"/;
     const match = appfilter.match(regex);
@@ -123,7 +122,6 @@ function extractDrawable(appfilter) {
     }
     return null; // Return null if no match found
 }
-
 
 // Parse appfilter content
 function parseAppfilter(appfilterContent) {
@@ -255,11 +253,11 @@ function sortTable(columnIndex) {
     sortingColumnIndex = columnIndex;
     // Sort the data
     const sortedData = sortData(sortingDirection, columnIndex, [...appEntriesDataGlobal]);
-    
+
     updateTable(sortedData);
 }
 
-function sortData(sortingDirection, columnIndex, sortedData){
+function sortData(sortingDirection, columnIndex, sortedData) {
     sortedData.sort((a, b) => {
         if (columnIndex === 4) { // Check if sorting the 'Last Requested' column
             const cellA = getCellValue(a, columnIndex);
