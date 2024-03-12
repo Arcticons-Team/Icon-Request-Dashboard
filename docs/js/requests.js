@@ -64,7 +64,7 @@ fetch('https://raw.githubusercontent.com/Arcticons-Team/Icon-Request-Dashboard/m
         appEntriesDataGlobal = appEntriesData;
 
         // Example usage:
-        fetch('https://raw.githubusercontent.com/Arcticons-Team/Arcticons/icon-requests/docs/assets/combined_appfilter.xml')
+        fetch('https://raw.githubusercontent.com/Arcticons-Team/Arcticons/Icon-Request-Dashboard/docs/assets/combined_appfilter.xml')
             .then(response => {
                 if (!response.ok) {
                     // If appfilter.xml cannot be loaded, render appEntriesData as is
