@@ -8,7 +8,7 @@ It also checks your pull requests and removes the entries from the requests list
 2. Open `docs/js/requests.js` Change `Arcticons-Team` to your username and possibly `Icon-Request-Dashboard` to your project name too. : `https://raw.githubusercontent.com/Arcticons-Team/Icon-Request-Dashboard/main/generated/requests.txt`
 3. Repeat the previous step for the combined appfilter. `https://raw.githubusercontent.com/Arcticons-Team/Arcticons/Icon-Request-Dashboard/docs/assets/combined_appfilter.xml`
 4. Setup GitHub Pages in your repo's Settings: **Pages > Deploy from branch > main /docs**
-
+(Using it with localhost is possible too, if you don't use the GitHub actions) 
 
 ## Process requests
 
