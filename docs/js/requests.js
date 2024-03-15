@@ -1,3 +1,9 @@
+//Edit the following variables
+var RepoOwner = "Arcticons-Team";
+var RepoName = "Icon-Request-Dashboard";
+var RepoBranch = "main";
+
+
 // Array of Link Images
 const imageNames = ['img/requests/google-play-store.svg', 'img/requests/f-droid.svg', 'img/requests/izzyondroid.svg', 'img/requests/galaxystore.svg', 'img/requests/search-globe.svg'];
 var appEntriesDataGlobal = []; // Store the original data for sorting
@@ -23,7 +29,7 @@ const debounce = (func, delay) => {
 };
 
 // CHANGE THIS LINE -> Fetch and process data
-fetch('https://raw.githubusercontent.com/Arcticons-Team/Icon-Request-Dashboard/main/generated/requests.txt')
+fetch(`https://raw.githubusercontent.com/${RepoOwner}/${RepoName}/${RepoBranch}/generated/requests.txt`)
     .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -67,7 +73,7 @@ fetch('https://raw.githubusercontent.com/Arcticons-Team/Icon-Request-Dashboard/m
         appEntriesDataGlobal = appEntriesData;
 
         // Example usage:
-        fetch('https://raw.githubusercontent.com/Arcticons-Team/Arcticons/Icon-Request-Dashboard/docs/assets/combined_appfilter.xml')
+        fetch(`https://raw.githubusercontent.com/${RepoOwner}/${RepoName}/${RepoBranch}/docs/assets/combined_appfilter.xml`)
             .then(response => {
                 if (!response.ok) {
                     // If appfilter.xml cannot be loaded, render appEntriesData as is
@@ -238,6 +244,17 @@ const filterAppEntries = debounce(() => {
         updateTable(filteredandsortedData);
     }
 }, 500);
+
+// Accessing the button element by its id
+const updatableButton = document.getElementById("updatable-button");
+
+// Add an event listener to the button
+updatableButton.addEventListener("click", function() {
+    // Define the URL to redirect to
+    const updatableURL = `https://${RepoOwner}.github.io/${RepoName}/`;
+    // Redirect to the specified URL
+    window.location.href = updatableURL;
+});
 
 // Sort table function
 function sortTable(columnIndex) {
