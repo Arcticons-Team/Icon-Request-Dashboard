@@ -13,11 +13,15 @@
     <body>
 
         <!-- Header -->
-        <h1 id="header">Possible appfilter Updates</h1>
+        <h1 id="header">Possible Appfilter Updates</h1>
 
-        <!-- Search Container -->
-        <div id="search-container">
-            <input type="text" id="search-input" oninput="filterAppEntries()" placeholder="Search">
+        <div class="header-container">
+            <div id="search-container">
+                <input type="text" id="search-input" oninput="filterAppEntries()" placeholder="Search">
+            </div>
+            <div id="updatable-container">
+                <button id ="updatable-button" onclick="window.location.href = 'https://arcticons-team.github.io/Icon-Request-Dashboard/';">Request Dashboard</button>
+            </div>
         </div>
 
         <!-- App Entries -->
