@@ -5,10 +5,8 @@ import xml.dom.minidom
 import hashlib
 import requests
 
-
-# Get the repository 
 # Change this to your Repo
-repo = g.get_repo("Arcticons-Team/Arcticons")
+Repo = "Arcticons-Team/Icon-Request-Dashboard"
 
 # Get the branch name
 # Change this to your branch name
@@ -17,6 +15,9 @@ branchName = "main"
 
 # Your GitHub token
 github_token = os.getenv('GITHUB_TOKEN')
+
+# Get the repository 
+repo = g.get_repo(Repo)
 
 # Initialize the GitHub instance
 g = Github(github_token)
