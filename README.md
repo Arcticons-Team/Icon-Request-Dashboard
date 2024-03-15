@@ -6,7 +6,8 @@ It also checks your pull requests and removes the entries from the requests list
 
 1. Clone this repo
 2. Open `docs/js/requests.js` and `docs/js/updatable.js` Change the variables at the top of the file from `Arcticons-Team` to your username and possibly `Icon-Request-Dashboard` to your project name and the branch name too. 
-3. Setup GitHub Pages in your repo's Settings: **Pages > Deploy from branch > main /docs**
+3. Open `.github/workflows/combine_appfilter.py` Change the Repository an the Branch to yours.
+4. Setup GitHub Pages in your repo's Settings: **Pages > Deploy from branch > main /docs**
 (Using it with localhost is possible too, if you don't use the GitHub actions) 
 
 ## Process requests
