@@ -16,9 +16,13 @@
         <h1 id="header">Requested Apps</h1>
         <h2 id="date_header">Date</h2>
 
-        <!-- Search Container -->
-        <div id="search-container">
-            <input type="text" id="search-input" oninput="filterAppEntries()" placeholder="Search">
+        <div class="header-container">
+            <div id="search-container">
+                <input type="text" id="search-input" oninput="filterAppEntries()" placeholder="Search">
+            </div>
+            <div id="updatable-container">
+                <button id ="updatable-button" onclick="window.location.href = 'https://arcticons-team.github.io/Icon-Request-Dashboard/updatable.html';">Potential Updates</button>
+            </div>
         </div>
 
         <!-- App Entries -->

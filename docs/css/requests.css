@@ -5,7 +5,42 @@
     font-style: oblique 0deg 10deg;
     font-variation-settings: "slnt" 0deg;
     src: url("../img/Inter.var.woff2") format("woff2");
-  }
+}
+
+.header-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    ;
+}
+
+#updatable-container {
+    margin-right: 15px;
+    width: 150px;
+    align-items: center;
+    justify-content: center;
+    ;
+}
+
+#updatable-button {
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border-radius: 100px;
+}
+
+#updatable-button:hover {
+    background-color: #409943;
+}
 
 body {
     font-family: 'Inter', Arial, Helvetica, sans-serif, sans-serif;
@@ -66,6 +101,7 @@ body {
     margin: 0 auto;
     align-items: center;
     justify-content: center;
+    padding-left: 165px;
 
 }
 
@@ -80,7 +116,7 @@ body {
     border: 1.5px solid #171717;
     box-shadow: none;
     outline: none;
-    padding: 0.8em 1.2em;    
+    padding: 0.8em 1.2em;
     font-size: 16px;
     font-weight: bold;
     font-family: 'Inter', Arial, Helvetica, sans-serif, sans-serif;
@@ -143,6 +179,7 @@ td {
 td:nth-child(1) {
     width: 20%;
 }
+
 td:nth-child(2) {
     min-width: 55px;
     max-width: 60px;
@@ -179,6 +216,7 @@ h1 {
     margin-top: 20px;
     margin-bottom: 20px;
 }
+
 h2 {
     text-align: center;
     margin-top: 20px;
@@ -187,8 +225,8 @@ h2 {
 
 .links img {
     filter: invert();
-    width:50px;
-    height:50px;
+    width: 50px;
+    height: 50px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -196,18 +234,23 @@ h2 {
         background-color: #171717;
         color: white;
     }
+
     tr:nth-child(even) {
         background-color: rgb(37, 37, 37);
     }
+
     th {
         background-color: #0f0f0f;
     }
+
     .links img {
         filter: none;
     }
+
     .asc::after {
         border-bottom: 4px solid white;
     }
+
     .desc::after {
         border-top: 4px solid white;
     }
