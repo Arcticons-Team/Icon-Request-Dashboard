@@ -4,8 +4,6 @@ var RepoName = "Icon-Request-Dashboard";
 var RepoBranch = "main";
 
 
-// Array of Link Images
-const imageNames = ['img/requests/google-play-store.svg', 'img/requests/f-droid.svg', 'img/requests/izzyondroid.svg', 'img/requests/galaxystore.svg', 'img/requests/search-globe.svg'];
 var appEntriesDataGlobal = []; // Store the original data for sorting
 // Lazy loading and virtualization
 const batchSize = 50; // Number of rows to load at a time
@@ -28,8 +26,8 @@ const debounce = (func, delay) => {
     };
 };
 
-// CHANGE THIS LINE -> Fetch and process data
-fetch(`https://raw.githubusercontent.com/${RepoOwner}/${RepoName}/${RepoBranch}/generated/requests.txt`)
+// Fetch and process data
+fetch(`https://raw.githubusercontent.com/${RepoOwner}/${RepoName}/${RepoBranch}/generated/updatable.txt`)
     .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -38,34 +36,15 @@ fetch(`https://raw.githubusercontent.com/${RepoOwner}/${RepoName}/${RepoBranch}/
     })
     .then(fileContent => {
         const appEntries = fileContent.split(/(?=<!--[^]*?-->)/).filter(entry => entry.trim() !== '');
-        // Call this function to change the header text
-        const headertext = appEntries[0].trim().split('\n')[1].trim();
-        const iconcount = headertext.trim().split(' ')[0].trim();
-        updateHeaderText(`${iconcount} Requested Apps Pending`);        
-        document.getElementById('date_header').innerText =headertext.trim().split('(')[1].trim().split(')')[0].trim();
 
         // Process each entry and store data
-        appEntries.slice(1).forEach(entry => {
+        appEntries.slice(0).forEach(entry => {
             const lines = entry.trim().split('\n');
             const appName = lines[0].trim().split('--')[1].trim();
             const appNameAppfilter = lines[0].trim();
             const appfilter = lines[1].trim().split('\n').join(' ').trim();
-            const appLinks = lines.slice(2, lines.length - 2).map((line, index) => {
-                const imageName = index < imageNames.length ? imageNames[index] : 'img/requests/default.svg';
-                return `<a href="${line.trim()}" class="links" target="_blank"><img src="${imageName}" alt="Image"></a>`;
-            }).join('\n');
-            const requestedTimestamp = parseInt(lines.slice(lines.length - 2)[1].trim().split(' ')[2]);
-            const requestedInfo = lines.slice(lines.length - 2)[0].trim().split(' ')[1].trim();
-            const lastRequestedTime = new Date(requestedTimestamp * 1000).toLocaleString();
-            const drawable = extractDrawable(appfilter);
-            const appIconPath = drawable ? `extracted_png/${drawable}.png` : 'img/requests/default.svg'; // Adjust path accordingly
-            const appIcon = `<img src="${appIconPath}" alt="App Icon" style="width:50px;height:50px;">`;
             appEntriesData.push({
                 appName,
-                appIcon,
-                appLinks,
-                requestedInfo,
-                lastRequestedTime,
                 appNameAppfilter,
                 appfilter
             });
@@ -93,7 +72,6 @@ fetch(`https://raw.githubusercontent.com/${RepoOwner}/${RepoName}/${RepoBranch}/
                 const filteredData = filterAppfilter(appEntriesData, appfilterContent);
                 appEntriesData = filteredData;
                 appEntriesDataGlobal = filteredData;
-                updateHeaderText(`${appEntriesData.length} Requested Apps Pending`);    
                 const table = document.querySelector('table');
                 const headers = table.querySelectorAll('thead th');
                 headers[sortingColumnIndex].classList.add(sortingDirection);
@@ -104,34 +82,25 @@ fetch(`https://raw.githubusercontent.com/${RepoOwner}/${RepoName}/${RepoBranch}/
     })
     .catch(error => console.error('Error fetching file:', error));
 
-// Filter appEntriesData based on appfilter content
-function filterAppfilter(appEntriesData, appfilterContent) {
-    const appfilterItems = parseAppfilter(appfilterContent);
-    const filteredOutEntries = [];
-
-    const filteredData = appEntriesData.filter(entry => {
-        const entryAppfilter = entry.appfilter.trim().split('"')[1].trim();
-        // Check if the entry is filtered out
-        const isFiltered = appfilterItems.some(component => component === entryAppfilter);
-        if (isFiltered) {
-            filteredOutEntries.push(entryAppfilter);
-        }
-        return !isFiltered;
-    });
-    console.log("Filtered out entries:", filteredOutEntries);
-    return filteredData;
-}
 
 
-// Function to extract the drawable attribute from appfilter
-function extractDrawable(appfilter) {
-    const regex = /drawable="([^"]+)"/;
-    const match = appfilter.match(regex);
-    if (match && match.length > 1) {
-        return match[1]; // Return the value inside the quotes
+    // Filter appEntriesData based on appfilter content
+    function filterAppfilter(appEntriesData, appfilterContent) {
+        const appfilterItems = parseAppfilter(appfilterContent);
+        const filteredOutEntries = [];
+    
+        const filteredData = appEntriesData.filter(entry => {
+            const entryAppfilter = entry.appfilter.trim().split('"')[1].trim();
+            // Check if the entry is filtered out
+            const isFiltered = appfilterItems.some(component => component === entryAppfilter);  
+            if (isFiltered) {
+                filteredOutEntries.push(entryAppfilter);
+            } 
+            return !isFiltered;
+        });
+        console.log("Filtered out entries:", filteredOutEntries); 
+        return filteredData;
     }
-    return null; // Return null if no match found
-}
 
 // Parse appfilter content
 function parseAppfilter(appfilterContent) {
@@ -185,16 +154,10 @@ function renderTable(data) {
         let cell1 = row.insertCell(0);
         let cell2 = row.insertCell(1);
         let cell3 = row.insertCell(2);
-        let cell4 = row.insertCell(3);
-        let cell5 = row.insertCell(4);
-        let cell6 = row.insertCell(5);
         index = index + startIndex;
         cell1.innerHTML = entry.appName;
-        cell2.innerHTML = entry.appIcon;
-        cell3.innerHTML = entry.appLinks;
-        cell4.innerHTML = entry.requestedInfo;
-        cell5.innerHTML = entry.lastRequestedTime;
-        cell6.innerHTML = `<button class="copy-button" onclick="copyToClipboard(${index})">Copy</button>`;
+        cell2.innerHTML = entry.appfilter.replace('<', '&lt;').replace('>', '&gt;').replace(/"/g, '&quot;').trim();
+        cell3.innerHTML = `<button class="copy-button" onclick="copyToClipboard(${index})">Copy</button>`;
     });
 }
 
@@ -224,6 +187,17 @@ function copyToClipboard(index) {
     });
 }
 
+// Accessing the button element by its id
+const updatableButton = document.getElementById("updatable-button");
+
+// Add an event listener to the button
+updatableButton.addEventListener("click", function() {
+    // Define the URL to redirect to
+    const updatableURL = `https://${RepoOwner}.github.io/${RepoName}/`;
+    // Redirect to the specified URL
+    window.location.href = updatableURL;
+});
+
 // Search function
 const filterAppEntries = debounce(() => {
     const searchInput = document.getElementById('search-input').value.toLowerCase();
@@ -245,17 +219,6 @@ const filterAppEntries = debounce(() => {
     }
 }, 500);
 
-// Accessing the button element by its id
-const updatableButton = document.getElementById("updatable-button");
-
-// Add an event listener to the button
-updatableButton.addEventListener("click", function() {
-    // Define the URL to redirect to
-    const updatableURL = `https://${RepoOwner}.github.io/${RepoName}/`;
-    // Redirect to the specified URL
-    window.location.href = updatableURL;
-});
-
 // Sort table function
 function sortTable(columnIndex) {
     const table = document.querySelector('table');
@@ -274,11 +237,11 @@ function sortTable(columnIndex) {
     sortingColumnIndex = columnIndex;
     // Sort the data
     const sortedData = sortData(sortingDirection, columnIndex, [...appEntriesDataGlobal]);
-
+    
     updateTable(sortedData);
 }
 
-function sortData(sortingDirection, columnIndex, sortedData) {
+function sortData(sortingDirection, columnIndex, sortedData){
     sortedData.sort((a, b) => {
         if (columnIndex === 4) { // Check if sorting the 'Last Requested' column
             const cellA = getCellValue(a, columnIndex);

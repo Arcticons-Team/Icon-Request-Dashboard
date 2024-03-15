@@ -5,8 +5,8 @@ It also checks your pull requests and removes the entries from the requests list
 ## How to set it up
 
 1. Clone this repo
-2. Open `docs/js/requests.js` Change `Arcticons-Team` to your username and possibly `Icon-Request-Dashboard` to your project name too. : `https://raw.githubusercontent.com/Arcticons-Team/Icon-Request-Dashboard/main/generated/requests.txt`
-3. Repeat the previous step for the combined appfilter. `https://raw.githubusercontent.com/Arcticons-Team/Arcticons/Icon-Request-Dashboard/docs/assets/combined_appfilter.xml`
+2. Open `docs/js/requests.js` and `docs/js/updatable.js` Change the variables at the top of the file from `Arcticons-Team` to your username and possibly `Icon-Request-Dashboard` to your project name and the branch name too. 
+3. Open `.github/workflows/combine_appfilter.py` Change the Repository an the Branch to yours.
 4. Setup GitHub Pages in your repo's Settings: **Pages > Deploy from branch > main /docs**
 (Using it with localhost is possible too, if you don't use the GitHub actions) 
 
@@ -22,4 +22,4 @@ This generates a `requests.txt` file and an `updatable.txt` if existing apps hav
 - **mail_folder_path** if you followed step 3 it should be `mail/`
 - **appfilter_path** the folder where you keep your appfilter.
 - **extracted_png_folder_path** the location to save all PNGs from icon requests `../docs/extracted_png`
-- **requests_path** the path to your requests.txt file `../generated/requests.txt`
+- **requests_path** the path to the folder containing your requests.txt file `../generated/`
