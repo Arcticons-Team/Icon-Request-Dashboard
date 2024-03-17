@@ -2,6 +2,10 @@
 A simple to setup dashboard for Android icon pack makers. <br>
 It also checks your pull requests and removes the entries from the requests list.
 
+## See it in Action
+[Arcticons](https://arcticons-team.github.io/Arcticons/requests.html)<br>
+[Dollphone-Foss](https://2gd4.me/dollphone-foss/requests.html)
+
 ## How to set it up
 
 1. Clone this repo
