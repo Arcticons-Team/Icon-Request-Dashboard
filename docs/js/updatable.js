@@ -1,9 +1,3 @@
-//Edit the following variables
-var RepoOwner = "Arcticons-Team";
-var RepoName = "Icon-Request-Dashboard";
-var RepoBranch = "main";
-
-
 var appEntriesDataGlobal = []; // Store the original data for sorting
 // Lazy loading and virtualization
 const batchSize = 50; // Number of rows to load at a time

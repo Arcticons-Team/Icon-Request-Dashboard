@@ -1,9 +1,3 @@
-//Edit the following variables
-var RepoOwner = "Arcticons-Team";
-var RepoName = "Icon-Request-Dashboard";
-var RepoBranch = "main";
-
-
 // Array of Link Images
 const imageNames = ['img/requests/google-play-store.svg', 'img/requests/f-droid.svg', 'img/requests/izzyondroid.svg', 'img/requests/galaxystore.svg', 'img/requests/search-globe.svg'];
 var appEntriesDataGlobal = []; // Store the original data for sorting
