@@ -29,7 +29,7 @@ const debounce = (func, delay) => {
 };
 
 // Fetch and process data
-fetch(`https://raw.githubusercontent.com/${RepoOwner}/${RepoName}/${RepoBranch}/generated/requests.txt`)
+fetch(`assets/requests.txt`)
     .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);

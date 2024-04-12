@@ -1,6 +1,6 @@
 //Edit the following variables
 var RepoOwner = "Arcticons-Team";
-var RepoName = "Arcticons";
+var RepoName = "Icon-Request-Dashboard";
 var RepoBranch = "main";
 
 
@@ -27,7 +27,7 @@ const debounce = (func, delay) => {
 };
 
 // Fetch and process data
-fetch(`https://raw.githubusercontent.com/${RepoOwner}/${RepoName}/${RepoBranch}/generated/updatable.txt`)
+fetch(`assets/updatable.txt`)
     .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
