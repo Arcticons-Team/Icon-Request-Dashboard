@@ -13,14 +13,14 @@ Repo = "Arcticons-Team/Icon-Request-Dashboard"
 branchName = "main"
 
 
-# Your GitHub token
+# Your GitHub token Don't change this
 github_token = os.getenv('GITHUB_TOKEN')
-
-# Get the repository 
-repo = g.get_repo(Repo)
 
 # Initialize the GitHub instance
 g = Github(github_token)
+
+# Get the repository 
+repo = g.get_repo(Repo)
 
 def combine_xml_files(input_files, output_file):
     unique_components = set()

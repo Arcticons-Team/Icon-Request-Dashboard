@@ -28,7 +28,7 @@ const debounce = (func, delay) => {
     };
 };
 
-// CHANGE THIS LINE -> Fetch and process data
+// Fetch and process data
 fetch(`https://raw.githubusercontent.com/${RepoOwner}/${RepoName}/${RepoBranch}/generated/requests.txt`)
     .then(response => {
         if (!response.ok) {
@@ -41,8 +41,8 @@ fetch(`https://raw.githubusercontent.com/${RepoOwner}/${RepoName}/${RepoBranch}/
         // Call this function to change the header text
         const headertext = appEntries[0].trim().split('\n')[1].trim();
         const iconcount = headertext.trim().split(' ')[0].trim();
-        updateHeaderText(`${iconcount} Requested Apps Pending`);        
-        document.getElementById('date_header').innerText =headertext.trim().split('(')[1].trim().split(')')[0].trim();
+        updateHeaderText(`${iconcount} Requested Apps Pending`);
+        document.getElementById('date_header').innerText = headertext.trim().split('(')[1].trim().split(')')[0].trim();
 
         // Process each entry and store data
         appEntries.slice(1).forEach(entry => {
@@ -73,7 +73,7 @@ fetch(`https://raw.githubusercontent.com/${RepoOwner}/${RepoName}/${RepoBranch}/
         appEntriesDataGlobal = appEntriesData;
 
         // Example usage:
-        fetch(`https://raw.githubusercontent.com/${RepoOwner}/${RepoName}/${RepoBranch}/docs/assets/combined_appfilter.xml`)
+        fetch(`assets/combined_appfilter.xml`)
             .then(response => {
                 if (!response.ok) {
                     // If appfilter.xml cannot be loaded, render appEntriesData as is
@@ -93,7 +93,7 @@ fetch(`https://raw.githubusercontent.com/${RepoOwner}/${RepoName}/${RepoBranch}/
                 const filteredData = filterAppfilter(appEntriesData, appfilterContent);
                 appEntriesData = filteredData;
                 appEntriesDataGlobal = filteredData;
-                updateHeaderText(`${appEntriesData.length} Requested Apps Pending`);    
+                updateHeaderText(`${appEntriesData.length} Requested Apps Pending`);
                 const table = document.querySelector('table');
                 const headers = table.querySelectorAll('thead th');
                 headers[sortingColumnIndex].classList.add(sortingDirection);
@@ -103,6 +103,18 @@ fetch(`https://raw.githubusercontent.com/${RepoOwner}/${RepoName}/${RepoBranch}/
             .catch(error => console.error('Error fetching or processing appfilter:', error));
     })
     .catch(error => console.error('Error fetching file:', error));
+
+
+// Accessing the button element by its id
+const updatableButton = document.getElementById("updatable-button");
+
+// Add an event listener to the button
+updatableButton.addEventListener("click", function() {
+    // Define the URL to redirect to
+    const updatableURL = `https://${RepoOwner}.github.io/${RepoName}/updatable.html`;
+    // Redirect to the specified URL
+    window.location.href = updatableURL;
+});
 
 // Filter appEntriesData based on appfilter content
 function filterAppfilter(appEntriesData, appfilterContent) {
@@ -244,17 +256,6 @@ const filterAppEntries = debounce(() => {
         updateTable(filteredandsortedData);
     }
 }, 500);
-
-// Accessing the button element by its id
-const updatableButton = document.getElementById("updatable-button");
-
-// Add an event listener to the button
-updatableButton.addEventListener("click", function() {
-    // Define the URL to redirect to
-    const updatableURL = `https://${RepoOwner}.github.io/${RepoName}/`;
-    // Redirect to the specified URL
-    window.location.href = updatableURL;
-});
 
 // Sort table function
 function sortTable(columnIndex) {
