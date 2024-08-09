@@ -1,16 +1,10 @@
-//Edit the following variables
-var RepoOwner = "Arcticons-Team";
-var RepoName = "Icon-Request-Dashboard";
-var RepoBranch = "main";
-
-
 var appEntriesDataGlobal = []; // Store the original data for sorting
 // Lazy loading and virtualization
 const batchSize = 50; // Number of rows to load at a time
 let startIndex = 0; // Start index for lazy loading
 let appEntriesData = []; // Store the original data for sorting
 // Global variables to track sorting column and direction
-let sortingColumnIndex = 3; 
+let sortingColumnIndex = 3;
 let sortingDirection = 'desc';
 
 // Debounce function for search input
@@ -27,7 +21,7 @@ const debounce = (func, delay) => {
 };
 
 // Fetch and process data
-fetch(`https://raw.githubusercontent.com/${RepoOwner}/${RepoName}/${RepoBranch}/generated/updatable.txt`)
+fetch(`assets/updatable.txt`)
     .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -43,16 +37,25 @@ fetch(`https://raw.githubusercontent.com/${RepoOwner}/${RepoName}/${RepoBranch}/
             const appName = lines[0].trim().split('--')[1].trim();
             const appNameAppfilter = lines[0].trim();
             const appfilter = lines[1].trim().split('\n').join(' ').trim();
+            const packageName = appfilter.split('ComponentInfo{')[1].split('/')[0].trim();
+            const drawable = extractDrawable(appfilter);
+            const appIconPath = drawable ? `extracted_png/${drawable}.png` : 'img/requests/default.svg'; // Adjust path accordingly
+            const appIcon = `<img src="${appIconPath}" alt="App Icon" style="width:50px;height:50px;">`;
+
             appEntriesData.push({
                 appName,
+                appIcon,
+                packageName,
                 appNameAppfilter,
-                appfilter
+                appfilter,
+                appIconPath
             });
         });
         appEntriesDataGlobal = appEntriesData;
+        updateHeaderText(`${appEntriesData.length} Possible Appfilter Updates`);
 
         // Example usage:
-        fetch(`https://raw.githubusercontent.com/${RepoOwner}/${RepoName}/${RepoBranch}/docs/assets/combined_appfilter.xml`)
+        fetch(`assets/combined_appfilter.xml`)
             .then(response => {
                 if (!response.ok) {
                     // If appfilter.xml cannot be loaded, render appEntriesData as is
@@ -72,9 +75,10 @@ fetch(`https://raw.githubusercontent.com/${RepoOwner}/${RepoName}/${RepoBranch}/
                 const filteredData = filterAppfilter(appEntriesData, appfilterContent);
                 appEntriesData = filteredData;
                 appEntriesDataGlobal = filteredData;
+                updateHeaderText(`${appEntriesData.length} Possible Appfilter Updates`);
                 const table = document.querySelector('table');
                 const headers = table.querySelectorAll('thead th');
-                headers[sortingColumnIndex].classList.add(sortingDirection);
+                // headers[sortingColumnIndex].classList.add(sortingDirection);
                 // Initial render
                 lazyLoadAndRender();
             })
@@ -82,25 +86,33 @@ fetch(`https://raw.githubusercontent.com/${RepoOwner}/${RepoName}/${RepoBranch}/
     })
     .catch(error => console.error('Error fetching file:', error));
 
-
-
-    // Filter appEntriesData based on appfilter content
-    function filterAppfilter(appEntriesData, appfilterContent) {
-        const appfilterItems = parseAppfilter(appfilterContent);
-        const filteredOutEntries = [];
-    
-        const filteredData = appEntriesData.filter(entry => {
-            const entryAppfilter = entry.appfilter.trim().split('"')[1].trim();
-            // Check if the entry is filtered out
-            const isFiltered = appfilterItems.some(component => component === entryAppfilter);  
-            if (isFiltered) {
-                filteredOutEntries.push(entryAppfilter);
-            } 
-            return !isFiltered;
-        });
-        console.log("Filtered out entries:", filteredOutEntries); 
-        return filteredData;
+// Function to extract the drawable attribute from appfilter
+function extractDrawable(appfilter) {
+    const regex = /drawable="([^"]+)"/;
+    const match = appfilter.match(regex);
+    if (match && match.length > 1) {
+        return match[1]; // Return the value inside the quotes
     }
+    return null; // Return null if no match found
+}
+
+// Filter appEntriesData based on appfilter content
+function filterAppfilter(appEntriesData, appfilterContent) {
+    const appfilterItems = parseAppfilter(appfilterContent);
+    const filteredOutEntries = [];
+
+    const filteredData = appEntriesData.filter(entry => {
+        const entryAppfilter = entry.appfilter.trim().split('"')[1].trim();
+        // Check if the entry is filtered out
+        const isFiltered = appfilterItems.some(component => component === entryAppfilter);
+        if (isFiltered) {
+            filteredOutEntries.push(entryAppfilter);
+        }
+        return !isFiltered;
+    });
+    console.log("Filtered out entries:", filteredOutEntries);
+    return filteredData;
+}
 
 // Parse appfilter content
 function parseAppfilter(appfilterContent) {
@@ -154,11 +166,44 @@ function renderTable(data) {
         let cell1 = row.insertCell(0);
         let cell2 = row.insertCell(1);
         let cell3 = row.insertCell(2);
+        let cell4 = row.insertCell(3);
+        let cell5 = row.insertCell(4);
         index = index + startIndex;
         cell1.innerHTML = entry.appName;
-        cell2.innerHTML = entry.appfilter.replace('<', '&lt;').replace('>', '&gt;').replace(/"/g, '&quot;').trim();
-        cell3.innerHTML = `<button class="copy-button" onclick="copyToClipboard(${index})">Copy</button>`;
+        cell2.innerHTML = `<a href="#" class="icon-preview" data-index="${index}">${entry.appIcon}</a>`;
+        cell3.innerHTML = `<div class="package-name"><div id="packagename">` + entry.packageName + `</div><div id="package-copy"><button class="copy-package" onclick="copyToClipboard(${index}, 'package')"><img src="img/requests/copy.svg"></button></div></div>`;
+        cell4.innerHTML = entry.appfilter.replace('<', '&lt;').replace('>', '&gt;').replace(/"/g, '&quot;').trim();
+        cell5.innerHTML = `<button class="copy-button" onclick="copyToClipboard(${index}, 'appfilter')">Copy</button>`;
     });
+        // Add event listeners to the icon previews
+        const iconPreviews = document.querySelectorAll('.icon-preview');
+        iconPreviews.forEach(icon => {
+            icon.addEventListener('click', function(event) {
+                event.preventDefault();
+                const index = parseInt(this.getAttribute('data-index'));
+                const entry = appEntriesDataGlobal[index];
+                showIconPreview(entry.appIconPath);
+            });
+        });
+}
+
+
+function showIconPreview(iconSrc) {
+    const previewOverlay = document.getElementById('preview-overlay');
+    const previewImage = document.getElementById('preview-image');
+
+    // Set the preview image source to the clicked icon source
+    previewImage.src = iconSrc;
+
+    // Show the preview overlay
+    previewOverlay.style.display = 'block';
+    // Add click event listener to hide the preview when clicked on the overlay or close button
+previewOverlay.addEventListener('click', function(e) {
+    if (e.target === this || e.target.classList.contains('close-button')) {
+        // Hide the preview overlay
+        this.style.display = 'none';
+    }
+});
 }
 
 // Update the table with filtered or sorted data
@@ -170,9 +215,16 @@ function updateTable(data) {
 }
 
 // Copy to clipboard function
-function copyToClipboard(index) {
+function copyToClipboard(index, event) {
     const entry = appEntriesDataGlobal[index];
-    const copyText = `${entry.appNameAppfilter}\n${entry.appfilter}`;
+    let copyText = "";
+
+    if (event == "package") {
+        copyText = `${entry.packageName}`;
+    } else if (event == "appfilter") {
+        copyText = `${entry.appfilter}`;
+    }
+
     navigator.clipboard.writeText(copyText).then(() => {
         // Show the copy notification
         document.getElementById('copy-notification').innerText = `Copied: ${copyText}`;
@@ -191,9 +243,9 @@ function copyToClipboard(index) {
 const updatableButton = document.getElementById("updatable-button");
 
 // Add an event listener to the button
-updatableButton.addEventListener("click", function() {
+updatableButton.addEventListener("click", function () {
     // Define the URL to redirect to
-    const updatableURL = `https://${RepoOwner}.github.io/${RepoName}/`;
+    const updatableURL = `requests.html`;
     // Redirect to the specified URL
     window.location.href = updatableURL;
 });
@@ -237,32 +289,16 @@ function sortTable(columnIndex) {
     sortingColumnIndex = columnIndex;
     // Sort the data
     const sortedData = sortData(sortingDirection, columnIndex, [...appEntriesDataGlobal]);
-    
+
     updateTable(sortedData);
 }
 
-function sortData(sortingDirection, columnIndex, sortedData){
+function sortData(sortingDirection, columnIndex, sortedData) {
     sortedData.sort((a, b) => {
-        if (columnIndex === 4) { // Check if sorting the 'Last Requested' column
-            const cellA = getCellValue(a, columnIndex);
-            const cellB = getCellValue(b, columnIndex);
-
-            // Handle dates
-            return sortingDirection === 'asc' ? cellA - cellB : cellB - cellA;
-        } else if (columnIndex === 3) {
-            const cellA = getCellValue(a, columnIndex);
-            const cellB = getCellValue(b, columnIndex);
-
-            // Handle numerical values
-            if (!isNaN(cellA) && !isNaN(cellB)) {
-                return sortingDirection === 'asc' ? cellA - cellB : cellB - cellA;
-            }
-        } else {
-            // Default to string comparison
-            const cellA = a[Object.keys(a)[columnIndex]].toLowerCase();
-            const cellB = b[Object.keys(b)[columnIndex]].toLowerCase();
-            return sortingDirection === 'asc' ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
-        }
+        // Default to string comparison
+        const cellA = a[Object.keys(a)[columnIndex]].toLowerCase();
+        const cellB = b[Object.keys(b)[columnIndex]].toLowerCase();
+        return sortingDirection === 'asc' ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
     });
     return sortedData;
 }
@@ -270,18 +306,4 @@ function sortData(sortingDirection, columnIndex, sortedData){
 // Initial table rendering
 function initializeTable() {
     renderTable(appEntriesData);
-}
-
-// Helper function to get cell value by column index
-function getCellValue(row, columnIndex) {
-    const key = Object.keys(row)[columnIndex];
-    if (key === 'lastRequestedTime') {
-        // Parse date strings to Date objects for sorting
-        const dateString = row[key].split(',')[0]; // Extract date part from the string
-        const [day, month, year] = dateString.split('/').map(Number); // Split the date string and convert parts to numbers
-        const timeString = row[key].split(',')[1].trim(); // Extract time part from the string
-        const [hour, minute, second] = timeString.split(':').map(Number); // Split the time string and convert parts to numbers
-        return new Date(year, month - 1, day, hour, minute, second); // Return a Date object with year, month, day, hour, minute, second
-    }
-    return isNaN(row[key]) ? row[key] : parseFloat(row[key]);
 }

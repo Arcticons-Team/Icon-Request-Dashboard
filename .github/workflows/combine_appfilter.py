@@ -5,21 +5,22 @@ import xml.dom.minidom
 import hashlib
 import requests
 
-
-# Get the repository 
 # Change this to your Repo
-repo = g.get_repo("Arcticons-Team/Arcticons")
+Repo = "Arcticons-Team/Arcticons"
 
 # Get the branch name
 # Change this to your branch name
 branchName = "main"
 
 
-# Your GitHub token
+# Your GitHub token Don't change this
 github_token = os.getenv('GITHUB_TOKEN')
 
 # Initialize the GitHub instance
 g = Github(github_token)
+
+# Get the repository 
+repo = g.get_repo(Repo)
 
 def combine_xml_files(input_files, output_file):
     unique_components = set()
