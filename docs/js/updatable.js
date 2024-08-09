@@ -38,12 +38,17 @@ fetch(`assets/updatable.txt`)
             const appNameAppfilter = lines[0].trim();
             const appfilter = lines[1].trim().split('\n').join(' ').trim();
             const packageName = appfilter.split('ComponentInfo{')[1].split('/')[0].trim();
+            const drawable = extractDrawable(appfilter);
+            const appIconPath = drawable ? `extracted_png/${drawable}.png` : 'img/requests/default.svg'; // Adjust path accordingly
+            const appIcon = `<img src="${appIconPath}" alt="App Icon" style="width:50px;height:50px;">`;
 
             appEntriesData.push({
                 appName,
+                appIcon,
+                packageName,
                 appNameAppfilter,
                 appfilter,
-                packageName
+                appIconPath
             });
         });
         appEntriesDataGlobal = appEntriesData;
@@ -81,7 +86,15 @@ fetch(`assets/updatable.txt`)
     })
     .catch(error => console.error('Error fetching file:', error));
 
-
+// Function to extract the drawable attribute from appfilter
+function extractDrawable(appfilter) {
+    const regex = /drawable="([^"]+)"/;
+    const match = appfilter.match(regex);
+    if (match && match.length > 1) {
+        return match[1]; // Return the value inside the quotes
+    }
+    return null; // Return null if no match found
+}
 
 // Filter appEntriesData based on appfilter content
 function filterAppfilter(appEntriesData, appfilterContent) {
@@ -154,12 +167,43 @@ function renderTable(data) {
         let cell2 = row.insertCell(1);
         let cell3 = row.insertCell(2);
         let cell4 = row.insertCell(3);
+        let cell5 = row.insertCell(4);
         index = index + startIndex;
         cell1.innerHTML = entry.appName;
-        cell2.innerHTML = `<div class="package-name"><div id="packagename">` + entry.packageName + `</div><div id="package-copy"><button class="copy-package" onclick="copyToClipboard(${index}, 'package')"><img src="img/requests/copy.svg"></button></div></div>`;
-        cell3.innerHTML = entry.appfilter.replace('<', '&lt;').replace('>', '&gt;').replace(/"/g, '&quot;').trim();
-        cell4.innerHTML = `<button class="copy-button" onclick="copyToClipboard(${index}, 'appfilter')">Copy</button>`;
+        cell2.innerHTML = `<a href="#" class="icon-preview" data-index="${index}">${entry.appIcon}</a>`;
+        cell3.innerHTML = `<div class="package-name"><div id="packagename">` + entry.packageName + `</div><div id="package-copy"><button class="copy-package" onclick="copyToClipboard(${index}, 'package')"><img src="img/requests/copy.svg"></button></div></div>`;
+        cell4.innerHTML = entry.appfilter.replace('<', '&lt;').replace('>', '&gt;').replace(/"/g, '&quot;').trim();
+        cell5.innerHTML = `<button class="copy-button" onclick="copyToClipboard(${index}, 'appfilter')">Copy</button>`;
     });
+        // Add event listeners to the icon previews
+        const iconPreviews = document.querySelectorAll('.icon-preview');
+        iconPreviews.forEach(icon => {
+            icon.addEventListener('click', function(event) {
+                event.preventDefault();
+                const index = parseInt(this.getAttribute('data-index'));
+                const entry = appEntriesDataGlobal[index];
+                showIconPreview(entry.appIconPath);
+            });
+        });
+}
+
+
+function showIconPreview(iconSrc) {
+    const previewOverlay = document.getElementById('preview-overlay');
+    const previewImage = document.getElementById('preview-image');
+
+    // Set the preview image source to the clicked icon source
+    previewImage.src = iconSrc;
+
+    // Show the preview overlay
+    previewOverlay.style.display = 'block';
+    // Add click event listener to hide the preview when clicked on the overlay or close button
+previewOverlay.addEventListener('click', function(e) {
+    if (e.target === this || e.target.classList.contains('close-button')) {
+        // Hide the preview overlay
+        this.style.display = 'none';
+    }
+});
 }
 
 // Update the table with filtered or sorted data
