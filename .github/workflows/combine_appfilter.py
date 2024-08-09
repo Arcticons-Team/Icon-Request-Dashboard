@@ -6,7 +6,7 @@ import hashlib
 import requests
 
 # Change this to your Repo
-Repo = "Arcticons-Team/Arcticons"
+Repo = "Arcticons-Team/Icon-Request-Dashboard"
 
 # Get the branch name
 # Change this to your branch name

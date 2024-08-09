@@ -2,13 +2,21 @@
 A simple to setup dashboard for Android icon pack makers. <br>
 It also checks your pull requests and removes the entries from the requests list.
 
+## See it in Action
+[Arcticons](https://arcticons-team.github.io/Arcticons/requests.html)<br>
+[Dollphone-Foss](https://2gd4.me/dollphone-foss/requests.html)
+
 ## How to set it up
 
 1. Clone this repo
-2. Open `docs/js/requests.js` and `docs/js/updatable.js` Change the variables at the top of the file from `Arcticons-Team` to your username and possibly `Icon-Request-Dashboard` to your project name and the branch name too. 
-3. Open `.github/workflows/combine_appfilter.py` Change the Repository an the Branch to yours.
-4. Setup GitHub Pages in your repo's Settings: **Pages > Deploy from branch > main /docs**
+2. Setup GitHub Pages in your repo's Settings: **Pages > Deploy from branch > main /docs**
 (Using it with localhost is possible too, if you don't use the GitHub actions) 
+
+### the Github actions
+
+If you want to use the GitHub action to filter out entries that are present in a pull request, you need to 
+open `.github/workflows/combine_appfilter.py` Change the Repository an the Branch to yours.
+this requeres the repo to be the same as the one that gets the pull requests.
 
 ## Process requests
 
@@ -22,4 +30,4 @@ This generates a `requests.txt` file and an `updatable.txt` if existing apps hav
 - **mail_folder_path** if you followed step 3 it should be `mail/`
 - **appfilter_path** the folder where you keep your appfilter.
 - **extracted_png_folder_path** the location to save all PNGs from icon requests `../docs/extracted_png`
-- **requests_path** the path to the folder containing your requests.txt file `../generated/`
+- **requests_path** the path to the folder containing your requests.txt file `../docs/assets/`
