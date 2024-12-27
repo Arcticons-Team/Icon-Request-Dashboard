@@ -117,6 +117,20 @@
     background-color: #409943;
 }
 
+#regex-search-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    /* Aligns the label and switch vertically */
+    width: 100%;
+    border: none;
+    color: white;
+    background-color: #4CAF50;
+    border-radius: 100px;
+    padding: 5px 10px 5px 5px;
+    text-decoration: none;
+}
+
 @media screen and (max-width: 1200px) {
     
     .lg-view{
@@ -139,6 +153,10 @@
     }
 
     #random-container{
+        display: none;
+    }
+
+    #regex-search-container {
         display: none;
     }
   }
