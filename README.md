@@ -4,7 +4,7 @@ It also checks your pull requests and removes the entries from the requests list
 
 ## See it in Action
 [Arcticons](https://arcticons-team.github.io/Arcticons/requests.html)<br>
-[Dollphone-Foss](https://2gd4.me/dollphone-foss/requests.html)
+[Dollphone-Foss](https://haleyhalcyon.gitlab.io/dollphone/requests.html)
 
 ## How to set it up
 
