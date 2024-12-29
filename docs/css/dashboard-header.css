@@ -11,6 +11,25 @@
 #search-container {
     display: flex;
     flex: 5;
+    position: relative;
+    /*display: inline-flex;*/
+    align-items: center;
+}
+
+#clear-search {
+    position: absolute;
+    display: block;
+    right: 10px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    color: #fff;
+    background-color: #8b1708;
+    font: 22px monospace;
+    text-align: center;
+    line-height: 1em;
+    cursor: pointer;
+    visibility: hidden;
 }
 
 #search-input {
@@ -38,13 +57,13 @@
 }
 
 /* I'm feeling lucky container */
-#random-container{
+#random-container {
     flex: 2;
     display: flex;
     gap: 10px;
 }
 
-#random-button{
+#random-button {
     flex: 3;
     width: 100%;
     border: none;
@@ -53,14 +72,15 @@
     border-radius: 100px;
     padding: 5px 15px;
     text-decoration: none;
+    cursor: pointer;
 }
 
-#random-button:hover{
-	background: linear-gradient(45deg, rgba(255,0,0,1) 0%, rgba(255,154,0,1) 10%, rgba(208,222,33,1) 20%, rgba(79,220,74,1) 30%, rgba(63,218,216,1) 40%, rgba(47,201,226,1) 50%, rgba(28,127,238,1) 60%, rgba(95,21,242,1) 70%, rgba(186,12,248,1) 80%, rgba(251,7,217,1) 90%, rgba(255,0,0,1) 100%);
-	text-shadow: 1px 1px 2px black;
+#random-button:hover {
+    background: linear-gradient(45deg, rgba(255, 0, 0, 1) 0%, rgba(255, 154, 0, 1) 10%, rgba(208, 222, 33, 1) 20%, rgba(79, 220, 74, 1) 30%, rgba(63, 218, 216, 1) 40%, rgba(47, 201, 226, 1) 50%, rgba(28, 127, 238, 1) 60%, rgba(95, 21, 242, 1) 70%, rgba(186, 12, 248, 1) 80%, rgba(251, 7, 217, 1) 90%, rgba(255, 0, 0, 1) 100%);
+    text-shadow: 1px 1px 2px black;
 }
 
-#random-number-input{
+#random-number-input {
     max-width: 80px;
     box-sizing: border-box !important;
     overflow: visible;
@@ -72,10 +92,10 @@
     padding: 0.8em 1.2em;
 }
 
-#random-reset-button{
+#random-reset-button {
     border: 1px solid red;
     cursor: pointer;
-    background-color: rgba(0,0,0,0);
+    background-color: rgba(0, 0, 0, 0);
     color: red;
     padding: 5px 15px;
     text-align: center;
@@ -85,13 +105,13 @@
 }
 
 /* Span text for the I'm feeling lucky button*/
-.lg-view{
-    display:inline-block;
- }
- 
- .sm-view{
-    display:none;
- }
+.lg-view {
+    display: inline-block;
+}
+
+.sm-view {
+    display: none;
+}
 
 /* Potential updates container */
 
@@ -132,14 +152,14 @@
 }
 
 @media screen and (max-width: 1200px) {
-    
-    .lg-view{
-        display:none;
-     }
- 
-     .sm-view{
-        display:inline-block;
-     }
+
+    .lg-view {
+        display: none;
+    }
+
+    .sm-view {
+        display: inline-block;
+    }
 
 }
 
@@ -152,11 +172,11 @@
         gap: 10px;
     }
 
-    #random-container{
+    #random-container {
         display: none;
     }
 
     #regex-search-container {
         display: none;
     }
-  }
+}
