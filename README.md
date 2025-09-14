@@ -1,4 +1,11 @@
 # Icon Request Dashboard
+
+⚠️ THIS REPO HAS BEEN MOVED TO CODEBERG. ⚠️
+
+To contribute or use the latest version, visit:
+
+[Icon-Request-Dashboard on Codeberg](https://codeberg.org/Arcticons/Icon-Request-Dashboard)
+
 A simple to setup dashboard for Android icon pack makers. <br>
 It also checks your pull requests and removes the entries from the requests list.
 
